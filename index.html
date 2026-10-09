@@ -335,4 +335,84 @@ const DSA = {
     ["Shuffle the Array","Easy","Arrays and hashing","https://leetcode.com/problems/shuffle-the-array/"],
     ["Richest Customer Wealth","Easy","Arrays and hashing","https://leetcode.com/problems/richest-customer-wealth/"],
     ["Running Sum of 1d Array","Easy","Arrays and hashing","https://leetcode.com/problems/running-sum-of-1d-array/"],
-    ["Build Array from Permutation","Easy","Arrays and hashing","https://leetcode.com/problems/build-array-f
+    ["Build Array from Permutation","Easy","Arrays and hashing","https://leetcode.com/problems/build-array-from-permutation/"],
+    ["Add Two Numbers","Medium","Linked lists","https://leetcode.com/problems/add-two-numbers/"],
+    ["Intersection of Two Linked Lists","Easy","Linked lists","https://leetcode.com/problems/intersection-of-two-linked-lists/"],
+    ["Palindrome Linked List","Easy","Linked lists","https://leetcode.com/problems/palindrome-linked-list/"],
+    ["Remove Nth Node From End of List","Medium","Linked lists","https://leetcode.com/problems/remove-nth-node-from-end-of-list/"],
+    ["Middle of the Linked List","Easy","Linked lists","https://leetcode.com/problems/middle-of-the-linked-list/"],
+    ["Merge Two Sorted Lists","Easy","Linked lists","https://leetcode.com/problems/merge-two-sorted-lists/"],
+    ["Reverse Linked List","Easy","Linked lists","https://leetcode.com/problems/reverse-linked-list/"]
+  ]
+};
+/* ============================================================ */
+
+// links
+const isReal = u => u && !u.includes("REPLACE");
+document.querySelectorAll("[data-link]").forEach(a => { if (isReal(LINKS[a.dataset.link])) a.href = LINKS[a.dataset.link]; else a.remove(); });
+const em = document.getElementById("email-link");
+if (isReal(LINKS.email)) {
+  em.href = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(LINKS.email) + "&su=" + encodeURIComponent("Opportunity for Shruti Tajne");
+  document.getElementById("addr-text").innerHTML = '<a href="mailto:' + LINKS.email + '" style="color:#fff">' + LINKS.email + '</a>';
+  const cb = document.getElementById("copy-email");
+  cb.onclick = async () => {
+    try { await navigator.clipboard.writeText(LINKS.email); cb.textContent = "Copied"; }
+    catch (e) { cb.textContent = "Select and copy above"; }
+    setTimeout(() => cb.textContent = "Copy", 2000);
+  };
+} else { em.remove(); document.getElementById("addr").remove(); }
+
+// projects
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+document.getElementById("project-list").innerHTML = PROJECTS.map(p => `
+  <article class="proj ${p.feature ? "feature" : ""}">
+    <div>
+      <h3>${esc(p.name)}<span class="badge ${p.status}">${esc(p.statusText)}</span></h3>
+      <p>${esc(p.desc)}</p>
+      <ul class="tags">${p.stack.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+    </div>
+    <div class="plinks">${p.links.filter(([l,u]) => isReal(u)).map(([l,u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(l)}</a>`).join("")}</div>
+  </article>`).join("");
+
+// dsa
+const total = DSA.easy + DSA.medium + DSA.hard;
+document.getElementById("dsa-total").textContent = total;
+const pl = document.getElementById("dsa-platform"); pl.textContent = DSA.platform; if (isReal(DSA.profile)) pl.href = DSA.profile;
+if (DSA.sample) document.getElementById("sample-note").innerHTML = '<div class="sample">Sample data. Replace the numbers and problems in the DSA block of this file, then set sample to false.</div>';
+const colors = {Easy:"var(--easy)", Medium:"var(--medium)", Hard:"var(--hard)"};
+const counts = {Easy:DSA.easy, Medium:DSA.medium, Hard:DSA.hard};
+document.getElementById("dsa-seg").innerHTML = Object.keys(counts).map(k => `<i style="width:${counts[k]/total*100}%;background:${colors[k]}"></i>`).join("");
+document.getElementById("dsa-legend").innerHTML = Object.keys(counts).map(k => `<span><span class="dot" style="background:${colors[k]}"></span>${k} ${counts[k]}</span>`).join("");
+const maxT = Math.max(...DSA.topics.map(t => t[1]));
+document.getElementById("dsa-topics").innerHTML = DSA.topics.map(([n,c]) => `<li><span>${esc(n)}</span><span class="bar"><i style="width:${c/maxT*100}%"></i></span><b>${c}</b></li>`).join("");
+
+const list = document.getElementById("dsa-list"), filters = document.getElementById("dsa-filters");
+let cur = "All", open = false;
+const more = document.createElement("button"); more.type = "button"; more.className = "more";
+more.onclick = () => { open = !open; drawList(cur); };
+list.after(more);
+function drawList(f){
+  cur = f;
+  const all = DSA.problems.filter(p => f === "All" || p[1] === f);
+  const shown = open ? all : all.slice(0, 8);
+  more.hidden = all.length <= 8;
+  more.textContent = open ? "Show fewer" : "Show all " + all.length;
+  list.innerHTML = shown.map(([n,d,t,u]) =>
+    `<li><a href="${u}" target="_blank" rel="noopener">${esc(n)}</a><span class="diff ${d}">${d}</span><span class="topic">${esc(t)}</span></li>`).join("");
+}
+["All","Easy","Medium","Hard"].forEach((f,i) => {
+  const b = document.createElement("button"); b.type = "button"; b.textContent = f; b.setAttribute("aria-pressed", i === 0);
+  b.onclick = () => { filters.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); drawList(f); };
+  filters.appendChild(b);
+});
+drawList("All");
+
+// hero: the API response prints in line by line, once
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const lines = document.querySelectorAll("#resp .l");
+  lines.forEach(l => l.style.visibility = "hidden");
+  lines.forEach((l,i) => setTimeout(() => l.style.visibility = "visible", 350 + i * 170));
+}
+</script>
+</body>
+</html>
