@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shruti Tajne | Backend Engineer (Java, Spring Boot)</title>
+<meta name="description" content="Portfolio of Shruti Tajne, a backend engineer building REST APIs with Java, Spring Boot, Kafka, Redis and MySQL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12263A; --muted:#4D6275; --bg:#F2F7F4; --surface:#FFFFFF; --line:#D5E2DA;
+  --green:#1F7A4D; --green-soft:#DDF0E5; --amber:#8A5A00; --amber-soft:#FBEBC8;
+  --easy:#2E9E6B; --medium:#D9962B; --hard:#C8473D;
+  --display:"Bricolage Grotesque",Georgia,sans-serif; --body:"Hanken Grotesk",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+section{padding:72px 0;border-top:1px solid var(--line)}
+h2{font-family:var(--display);font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.15;margin-bottom:8px;letter-spacing:-.01em}
+.lede{color:var(--muted);max-width:60ch;margin-bottom:36px}
+
+/* nav */
+header.nav{position:sticky;top:0;z-index:10;background:rgba(242,247,244,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.brand{font-family:var(--display);font-weight:700;text-decoration:none;font-size:1.1rem}
+.nav ul{display:flex;gap:22px;list-style:none;font-size:.95rem;font-weight:500;overflow-x:auto}
+.nav ul a{text-decoration:none;color:var(--muted);white-space:nowrap}
+.nav ul a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding:64px 0 72px;border-top:0}
+.hero .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(2.6rem,7vw,4.6rem);line-height:1.02;letter-spacing:-.03em;margin-bottom:18px}
+.hero .role{font-size:1.25rem;font-weight:600;color:var(--green);margin-bottom:14px}
+.hero p.intro{color:var(--muted);max-width:46ch;margin-bottom:28px}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-block;padding:11px 20px;border-radius:8px;border:1.5px solid var(--ink);font-weight:600;text-decoration:none;font-size:.95rem;transition:background .15s,color .15s}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.primary:hover{background:var(--green);border-color:var(--green)}
+.btn:not(.primary):hover{background:var(--ink);color:#fff}
+.panel{background:var(--ink);color:#C9D6E0;border-radius:14px;padding:20px 22px;font-family:var(--mono);font-size:.84rem;line-height:1.75;overflow-x:auto}
+.panel .req{display:flex;justify-content:space-between;gap:12px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid #2B4258;white-space:nowrap}
+.panel .ok{color:#8FD3B0}
+.k{color:#8FD3B0}.s{color:#F2C879}.p{color:#7F96A8}.b{color:#F59E8F}
+.panel .l{display:block;white-space:pre}
+
+/* experience & lists */
+.entry{display:grid;grid-template-columns:200px 1fr;gap:12px 32px;padding:22px 0;border-bottom:1px solid var(--line)}
+.entry:last-child{border-bottom:0}
+.entry .when{color:var(--muted);font-size:.93rem}
+.entry h3{font-family:var(--display);font-size:1.2rem;margin-bottom:2px}
+.entry .org{color:var(--green);font-weight:600;margin-bottom:8px}
+.entry ul{padding-left:18px;color:var(--muted)}
+.entry li{margin-bottom:4px}
+
+/* projects */
+.proj{display:grid;grid-template-columns:1fr auto;gap:8px 24px;padding:26px 0;border-bottom:1px solid var(--line)}
+.proj:first-child{padding-top:0}
+.proj h3{font-family:var(--display);font-size:1.35rem}
+.proj.feature h3{font-size:1.7rem}
+.proj p{color:var(--muted);max-width:62ch;margin:6px 0 12px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none}
+.tags li{font-size:.82rem;padding:3px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.badge{display:inline-block;font-size:.8rem;font-weight:600;padding:3px 10px;border-radius:999px;margin-left:10px;vertical-align:middle}
+.badge.live{background:var(--green-soft);color:var(--green)}
+.badge.wip{background:var(--amber-soft);color:var(--amber)}
+.plinks{display:flex;flex-direction:column;gap:8px;align-items:flex-end;font-weight:600;font-size:.95rem}
+.plinks a{text-decoration:underline;text-underline-offset:3px}
+.plinks span{color:var(--muted);font-weight:500}
+
+/* dsa */
+.dsa-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.total{font-family:var(--display);font-size:4rem;font-weight:700;line-height:1;letter-spacing:-.03em}
+.total small{font-size:1.05rem;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:8px}
+.seg{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:18px 0 12px;background:var(--line)}
+.seg i{display:block}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.93rem}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.topics{list-style:none}
+.topics li{display:grid;grid-template-columns:150px 1fr 34px;gap:12px;align-items:center;font-size:.93rem;margin-bottom:9px}
+.topics .bar{height:8px;border-radius:4px;background:var(--green-soft)}
+.topics .bar i{display:block;height:100%;border-radius:4px;background:var(--green)}
+.topics b{text-align:right;font-weight:600}
+.filters{display:flex;gap:8px;margin:36px 0 12px;flex-wrap:wrap}
+.filters button{font:inherit;font-size:.9rem;font-weight:600;padding:6px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;color:var(--ink)}
+.filters button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.plist{list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.plist li{display:grid;grid-template-columns:1fr 90px 160px;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line);font-size:.95rem;align-items:center}
+.plist li:last-child{border-bottom:0}
+.plist a{font-weight:600;text-underline-offset:3px}
+.diff{font-weight:600;font-size:.85rem}
+.diff.Easy{color:var(--easy)}.diff.Medium{color:var(--medium)}.diff.Hard{color:var(--hard)}
+.plist .topic{color:var(--muted);font-size:.88rem}
+.more{font:inherit;font-weight:600;font-size:.92rem;margin-top:12px;padding:8px 18px;border-radius:8px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.more:hover{background:var(--ink);color:#fff}
+.addr{margin:22px auto 0!important;font-size:.95rem}
+.copy{font:inherit;font-weight:600;font-size:.85rem;margin-left:8px;padding:4px 12px;border-radius:6px;border:1.5px solid #fff;background:transparent;color:#fff;cursor:pointer}
+.copy:hover{background:#fff;color:var(--ink)}
+.sample{background:var(--amber-soft);color:var(--amber);padding:10px 14px;border-radius:8px;font-weight:600;font-size:.92rem;margin-bottom:24px}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
+.skills h3{font-family:var(--display);font-size:1.05rem;margin-bottom:10px}
+.skills ul{list-style:none;color:var(--muted)}
+.skills li{padding:3px 0}
+
+/* about / contact */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.two p{color:var(--muted);margin-bottom:12px}
+.two h3{font-family:var(--display);font-size:1.15rem;margin-bottom:8px}
+.contact{background:var(--ink);color:#fff;border-radius:18px;padding:48px 32px;text-align:center}
+.contact h2{color:#fff}
+.contact p{color:#B9C8D5;max-width:48ch;margin:0 auto 24px}
+.contact .btn{border-color:#fff;color:#fff}
+.contact .btn.primary{background:#fff;color:var(--ink)}
+.contact .btn:not(.primary):hover{background:#fff;color:var(--ink)}
+footer{padding:28px 0 48px;color:var(--muted);font-size:.9rem;text-align:center}
+
+@media (max-width:780px){
+  body{font-size:16px}
+  section{padding:52px 0}
+  .hero .wrap,.dsa-grid,.two{grid-template-columns:1fr}
+  .entry{grid-template-columns:1fr}
+  .proj{grid-template-columns:1fr}
+  .plinks{flex-direction:row;align-items:flex-start;gap:18px}
+  .plist li{grid-template-columns:1fr auto}
+  .plist .topic{display:none}
+  .topics li{grid-template-columns:120px 1fr 28px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Shruti Tajne</a>
+    <nav aria-label="Sections"><ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#dsa">DSA</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul></nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Shruti Tajne</h1>
+      <p class="role">Backend engineer, Java and Spring Boot</p>
+      <p class="intro">I build REST APIs and the systems behind them with Spring Boot, MySQL, Redis and Kafka. Recent BTech graduate, currently interning on a real client ERP, and looking for my first full-time backend role.</p>
+      <div class="btns">
+        <a class="btn primary" data-link="resume" target="_blank" rel="noopener">View resume</a>
+        <a class="btn" data-link="github" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" data-link="linkedin" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="panel" role="img" aria-label="A sample API response summarising Shruti: backend engineer, Java, Spring Boot, Kafka, Redis, MySQL, based in Nagpur, open to work.">
+      <div class="req"><span>GET /api/engineers/shruti-tajne</span><span class="ok">200 OK</span></div>
+      <div id="resp">
+<span class="l"><span class="p">{</span></span>
+<span class="l">  <span class="k">"role"</span><span class="p">:</span> <span class="s">"Backend Engineer"</span><span class="p">,</span></span>
+<span class="l">  <span class="k">"stack"</span><span class="p">:</span> <span class="p">[</span><span class="s">"Java"</span><span class="p">,</span> <span class="s">"Spring Boot"</span><span class="p">,</span></span>
+<span class="l">            <span class="s">"Kafka"</span><span class="p">,</span> <span class="s">"Redis"</span><span class="p">,</span> <span class="s">"MySQL"</span><span class="p">],</span></span>
+<span class="l">  <span class="k">"experience"</span><span class="p">:</span> <span class="s">"SWE Intern, Infosai"</span><span class="p">,</span></span>
+<span class="l">  <span class="k">"education"</span><span class="p">:</span> <span class="s">"BTech, CGPA 8.81"</span><span class="p">,</span></span>
+<span class="l">  <span class="k">"location"</span><span class="p">:</span> <span class="s">"Nagpur, India"</span><span class="p">,</span></span>
+<span class="l">  <span class="k">"openToWork"</span><span class="p">:</span> <span class="b">true</span></span>
+<span class="l"><span class="p">}</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <h2>Experience</h2>
+    <p class="lede">Hands-on work on a production-style client system.</p>
+    <div class="entry">
+      <div class="when">Aug 2026 to present</div>
+      <div>
+        <h3>Software Engineer Intern</h3>
+        <div class="org">Infosai Software Company</div>
+        <ul>
+          <li>Building an ERP system for a food manufacturing client, with a React frontend and a Spring Boot backend.</li>
+          <li>Own the master data modules and the combo box inputs that feed the ERP forms.</li>
+          <li>Work in a client-facing team: requirements, APIs, and delivery.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <h2>Projects</h2>
+    <p class="lede">What I've built, and honestly where each one stands.</p>
+    <div id="project-list"></div>
+  </div>
+</section>
+
+<section id="dsa">
+  <div class="wrap">
+    <h2>Problem solving</h2>
+    <p class="lede">Data structures and algorithms practice, tracked by difficulty and topic.</p>
+    <div id="sample-note"></div>
+    <div class="dsa-grid">
+      <div>
+        <div class="total"><span id="dsa-total">0</span><small>problems solved on <a id="dsa-platform" target="_blank" rel="noopener"></a></small></div>
+        <div class="seg" id="dsa-seg" role="img" aria-label="Solved problems by difficulty"></div>
+        <div class="legend" id="dsa-legend"></div>
+      </div>
+      <ul class="topics" id="dsa-topics" aria-label="Problems solved by topic"></ul>
+    </div>
+    <div class="filters" id="dsa-filters" role="group" aria-label="Filter problems by difficulty"></div>
+    <ul class="plist" id="dsa-list"></ul>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <h2>Skills</h2>
+    <p class="lede">The tools I use most.</p>
+    <div class="skills">
+      <div><h3>Languages</h3><ul><li>Java</li><li>SQL</li><li>JavaScript</li></ul></div>
+      <div><h3>Backend</h3><ul><li>Spring Boot, Spring Data JPA</li><li>REST API design</li><li>Kafka</li></ul></div>
+      <div><h3>Data</h3><ul><li>MySQL</li><li>Redis caching</li></ul></div>
+      <div><h3>Frontend and tools</h3><ul><li>React</li><li>Git and GitHub</li><li>Postman</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <h2>About</h2>
+    <p class="lede">A bit beyond the code.</p>
+    <div class="two">
+      <div>
+        <h3>Education</h3>
+        <p>BTech, Government College of Engineering, Chandrapur. Graduated June 2026 with a CGPA of 8.81.</p>
+        <p>Based in Nagpur, Maharashtra. Happy to relocate or work remotely.</p>
+      </div>
+      <div>
+        <h3>Communication and leadership</h3>
+        <p>Part of the college Environment Club, and I anchor events. I'm comfortable speaking to a room, explaining technical work to non-technical people, and working with clients.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact">
+      <h2>Let's talk</h2>
+      <p>I'm open to backend and software engineer roles. The fastest way to reach me is email.</p>
+      <div class="btns" style="justify-content:center">
+        <a class="btn primary" id="email-link" target="_blank" rel="noopener">Email me</a>
+        <a class="btn" data-link="resume" target="_blank" rel="noopener">Resume</a>
+        <a class="btn" data-link="linkedin" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" data-link="github" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <p class="addr" id="addr"><span id="addr-text"></span> <button type="button" id="copy-email" class="copy">Copy</button></p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">Shruti Tajne, Nagpur, India</div></footer>
+
+<script>
+/* ============================================================
+   EDIT THIS BLOCK. Everything on the page is driven from here.
+   ============================================================ */
+const LINKS = {
+  resume:   "https://drive.google.com/file/d/1FvYZcqjuiuQY8-Fw_ZF2CuP1WDYrBCn7/view?usp=drivesdk",
+  github:   "https://github.com/shrutitajne2004-hub",
+  linkedin: "https://www.linkedin.com/in/shruti-t-666a11280",
+  email:    "shrutitajne2004@gmail.com"
+};
+
+const PROJECTS = [
+  { feature:true, name:"Netflix Clone", status:"live", statusText:"Live demo",
+    desc:"A streaming-style app with a Spring Boot REST backend and MySQL database, plus a web frontend for browsing and playing titles.",
+    stack:["Java","Spring Boot","MySQL","REST API"],
+    links:[["Live demo","https://netflix-clone-zeta-two-47.vercel.app"],["Code","https://github.com/shrutitajne2004-hub/netflix-clone"]] },
+  { name:"WhatsApp Mobile Shop", status:"wip", statusText:"In progress, not deployed yet",
+    desc:"An online mobile phone shop designed around WhatsApp ordering. Backend and data model are built; deployment is the next step.",
+    stack:["Java","Spring Boot","MySQL"],
+    links:[["Code","https://github.com/REPLACE-USERNAME/whatsapp-mobile-shop"]] },
+  { name:"AI Help Desk Support System", status:"wip", statusText:"Project",
+    desc:"A help desk system that uses AI to assist with handling support requests.",
+    stack:["Java","Spring Boot"],
+    links:[["Code","https://github.com/REPLACE-USERNAME/ai-help-desk"]] }
+];
+
+const DSA = {
+  sample: false,
+  platform: "LeetCode",
+  profile: "https://leetcode.com/u/callmeshrut",
+  easy: 25, medium: 8, hard: 0,
+  topics: [ ["Arrays and hashing",11], ["Trees and graphs",7], ["Linked lists",7], ["Binary search",5], ["Greedy",2], ["Recursion and DP",1] ],
+  problems: [  // newest first: [name, difficulty, topic, link]
+    ["Fibonacci Number","Easy","Recursion and DP","https://leetcode.com/problems/fibonacci-number/"],
+    ["Flood Fill","Easy","Trees and graphs","https://leetcode.com/problems/flood-fill/"],
+    ["Number of Islands","Medium","Trees and graphs","https://leetcode.com/problems/number-of-islands/"],
+    ["Count the Number of Complete Components","Medium","Trees and graphs","https://leetcode.com/problems/count-the-number-of-complete-components/"],
+    ["Binary Tree Level Order Traversal","Medium","Trees and graphs","https://leetcode.com/problems/binary-tree-level-order-traversal/"],
+    ["Binary Tree Postorder Traversal","Easy","Trees and graphs","https://leetcode.com/problems/binary-tree-postorder-traversal/"],
+    ["Binary Tree Inorder Traversal","Easy","Trees and graphs","https://leetcode.com/problems/binary-tree-inorder-traversal/"],
+    ["Binary Tree Preorder Traversal","Easy","Trees and graphs","https://leetcode.com/problems/binary-tree-preorder-traversal/"],
+    ["Two Sum","Easy","Arrays and hashing","https://leetcode.com/problems/two-sum/"],
+    ["Longest Consecutive Sequence","Medium","Arrays and hashing","https://leetcode.com/problems/longest-consecutive-sequence/"],
+    ["Happy Number","Easy","Arrays and hashing","https://leetcode.com/problems/happy-number/"],
+    ["Intersection of Two Arrays","Easy","Arrays and hashing","https://leetcode.com/problems/intersection-of-two-arrays/"],
+    ["Single Number","Easy","Arrays and hashing","https://leetcode.com/problems/single-number/"],
+    ["Contains Duplicate","Easy","Arrays and hashing","https://leetcode.com/problems/contains-duplicate/"],
+    ["Search in Rotated Sorted Array","Medium","Binary search","https://leetcode.com/problems/search-in-rotated-sorted-array/"],
+    ["Peak Index in a Mountain Array","Medium","Binary search","https://leetcode.com/problems/peak-index-in-a-mountain-array/"],
+    ["Missing Number","Easy","Arrays and hashing","https://leetcode.com/problems/missing-number/"],
+    ["Sqrt(x)","Easy","Binary search","https://leetcode.com/problems/sqrtx/"],
+    ["Search Insert Position","Easy","Binary search","https://leetcode.com/problems/search-insert-position/"],
+    ["Binary Search","Easy","Binary search","https://leetcode.com/problems/binary-search/"],
+    ["Lemonade Change","Easy","Greedy","https://leetcode.com/problems/lemonade-change/"],
+    ["Assign Cookies","Easy","Greedy","https://leetcode.com/problems/assign-cookies/"],
+    ["Shuffle the Array","Easy","Arrays and hashing","https://leetcode.com/problems/shuffle-the-array/"],
+    ["Richest Customer Wealth","Easy","Arrays and hashing","https://leetcode.com/problems/richest-customer-wealth/"],
+    ["Running Sum of 1d Array","Easy","Arrays and hashing","https://leetcode.com/problems/running-sum-of-1d-array/"],
+    ["Build Array from Permutation","Easy","Arrays and hashing","https://leetcode.com/problems/build-array-f
